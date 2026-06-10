@@ -13,53 +13,60 @@ function Register() {
     phone: ''
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await axios.post('http://127.0.0.1:8000/api/auth/register/', form);
       navigate('/login');
-    } catch (err) {
+    } catch {
       setError('Хатогӣ! Маълумотро дуруст пур кун.');
     }
+    setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12">
-      <div className="w-full max-w-md">
-        <h1 className="text-2xl font-medium mb-2 text-center">Қайд шудан</h1>
-        <p className="text-gray-400 text-center mb-8">Аккаунти нав созед</p>
+    <div className="min-h-screen flex items-center justify-center px-6 py-12" style={{background: 'linear-gradient(180deg, #13102a 0%, #0f0f13 100%)'}}>
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <Link to="/" className="text-2xl font-medium">
+            Ilm<span className="text-primary">Bozor</span>
+          </Link>
+          <p className="text-gray-400 text-sm mt-2">Аккаунти нав созед</p>
+        </div>
         {error && (
-          <div className="bg-red-900 border border-red-700 text-red-300 px-4 py-3 rounded-lg mb-4">
+          <div className="bg-red-950 border border-red-800 text-red-400 px-4 py-3 rounded-xl mb-4 text-sm">
             {error}
           </div>
         )}
-        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-4">
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Логин</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Логин</label>
             <input
               type="text"
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.username}
               onChange={e => setForm({...form, username: e.target.value})}
               placeholder="username"
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Email</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Email</label>
             <input
               type="email"
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.email}
               onChange={e => setForm({...form, email: e.target.value})}
               placeholder="email@example.com"
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Нақш</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Нақш</label>
             <select
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.role}
               onChange={e => setForm({...form, role: e.target.value})}
             >
@@ -68,30 +75,30 @@ function Register() {
             </select>
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Ташкилот</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Ташкилот</label>
             <input
               type="text"
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.organization}
               onChange={e => setForm({...form, organization: e.target.value})}
               placeholder="ДМТ, АИТ..."
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Парол</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Парол</label>
             <input
               type="password"
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.password}
               onChange={e => setForm({...form, password: e.target.value})}
               placeholder="••••••••"
             />
           </div>
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">Паролро такрор кун</label>
+            <label className="text-xs text-gray-400 mb-2 block uppercase tracking-wider">Паролро такрор кун</label>
             <input
               type="password"
-              className="w-full bg-dark border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-primary"
+              className="w-full bg-dark border border-gray-700 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
               value={form.password2}
               onChange={e => setForm({...form, password2: e.target.value})}
               placeholder="••••••••"
@@ -99,11 +106,12 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="w-full bg-primary text-white rounded-lg py-3 font-medium hover:opacity-90"
+            disabled={loading}
+            className="w-full bg-primary text-white rounded-xl py-3 text-sm font-medium hover:opacity-90 disabled:opacity-50 mt-2"
           >
-            Қайд шудан
+            {loading ? 'Зеркунӣ...' : 'Қайд шудан'}
           </button>
-          <p className="text-center text-sm text-gray-400">
+          <p className="text-center text-xs text-gray-500">
             Аккаунт дорӣ?{' '}
             <Link to="/login" className="text-primary hover:underline">Дохил шав</Link>
           </p>
